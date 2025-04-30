@@ -1,21 +1,22 @@
 import { envs } from '../config/plugins/envs.plugin';
-import { LogRepository } from '../domain/repository/log.repository';
 import { CheckService } from '../domain/use-cases/checks/check-service';
 import { SendEmailLogs } from '../domain/use-cases/email/send-email-logs';
 import { FileSystemDatasource } from '../infrastructure/datasources/file-system.datasource';
+import { MongoLogDatasource } from '../infrastructure/datasources/mongo-log-datasource';
 import { LogRepositoryImpl } from '../infrastructure/repositories/log.repository.impl';
 import {CronService} from './cron/cron-service';
 import { EmailService } from './email/email.service';
 
-const fileSystemLogRepository = new LogRepositoryImpl(
-    new FileSystemDatasource()
+const logRepository = new LogRepositoryImpl(
+    // new FileSystemDatasource()
+    new MongoLogDatasource(),
 ); // Assuming you have a file system log repository implementation
 
 const emailService = new EmailService(    );
 
 export class Server {
     public static start(){
-        console.log("Server started....");
+      //  console.log("Server started..++++....");
 
     //todo 
 //     new SendEmailLogs(
@@ -39,17 +40,17 @@ export class Server {
 
     //todo: se ejecuta cada 5 segundos el servicio de check
 
-        // CronService.createJob(
-        //     '*/5 * * * * *', // cronTime
-        //     () => {
-        //         const url = 'http://google.com'; // url to check
-        //        new CheckService(
-        //         fileSystemLogRepository,
-        //             () => console.log(`Success callback: ${url}`),
-        //             (error) => console.log(`Error callback: ${error}`),
-        //        ).execute(url);
-        //     } // onTick
-        // );
+        CronService.createJob(
+            '* * * * * *', // cronTime
+            () => {
+                const url = 'http://google.com'; // url to check
+               new CheckService(
+                logRepository,
+                    () => console.log(`Success callback: ${url}`),
+                    (error) => console.log(`Error callback: ${error}`),
+               ).execute(url);
+            } // onTick
+        );
 
     }
 }

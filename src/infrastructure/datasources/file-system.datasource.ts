@@ -1,5 +1,5 @@
 import fs from 'fs';
-import { LogDatasource } from "../../domain/datasources/log-datasource";
+import { LogDatasource } from "../../domain/datasources/log.datasource";
 import { LogEntity, LogServerityLevel } from "../../domain/entities/log.entity";
 
 
@@ -51,6 +51,8 @@ export class FileSystemDatasource implements LogDatasource {
 
     private getLogFromFile = (path: string): LogEntity[] => {
         const contest = fs.readFileSync(path, 'utf-8');
+        if(contest==='') return [];
+
           const logs = contest.split('\n').map(
              log =>LogEntity.fromJson(log)
          );

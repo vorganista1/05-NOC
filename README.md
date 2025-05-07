@@ -15,4 +15,8 @@ PROD = false
 3. Ejecutar el comando `
 `` npm install``
 
+4. leantar las bases de datos con el comando 
+ `````
+ docker compose up -d
+ ````
 4. Ejecutar ``npm run dev``

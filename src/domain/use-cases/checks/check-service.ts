@@ -1,12 +1,12 @@
-import { LogEntity, LogServerityLevel } from "../../entities/log.entity";
-import { LogRepository } from "../../repository/log.repository";
+ import { LogEntity, LogServerityLevel } from "../../entities/log.entity";
+ import { LogRepository } from "../../repository/log.repository";
 
 interface CheckServiceUseCase {
      execute(url:string ):Promise<boolean> 
 }
 
-type SuccessCallbaack = (() => void)  | undefined;
-type ErrorCallback = ((error: string) => void) | undefined;
+ type SuccessCallbaack = (() => void)  | undefined;
+ type ErrorCallback = ((error: string) => void) | undefined;
 
 
 export class CheckService implements CheckServiceUseCase {
@@ -20,7 +20,7 @@ export class CheckService implements CheckServiceUseCase {
     public  async execute(url:string ): Promise<boolean> {
 
         try {
-            const req = await fetch(url);
+             const req = await fetch(url);
             if(!req.ok){
                 throw new Error(`Error on check service: ${url}`);
             }
@@ -31,9 +31,9 @@ export class CheckService implements CheckServiceUseCase {
                 origin      : 'Check-Service.ts',
 
             });
-            this.logRepository.saveLog(log);
-            this.successCallback &&  this.successCallback();
-            return true;  
+             this.logRepository.saveLog(log);
+             this.successCallback &&  this.successCallback();
+             return true;  
 
             }catch (error) {
                 const errorMessage = `Service ${url} is down:  ${error}`;

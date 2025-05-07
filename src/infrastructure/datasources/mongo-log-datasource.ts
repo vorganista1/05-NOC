@@ -1,5 +1,5 @@
 import { LogModel } from "../../data/mongo";
-import { LogDatasource } from "../../domain/datasources/log-datasource";
+import { LogDatasource } from "../../domain/datasources/log.datasource";
 import { LogEntity, LogServerityLevel } from "../../domain/entities/log.entity";
 
 export class MongoLogDatasource implements LogDatasource{

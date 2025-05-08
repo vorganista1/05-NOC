@@ -29,19 +29,19 @@ async function main(){
 //     });
 //  console.log(newLog);
 
-const prisma = new PrismaClient();
-const logs = await prisma.logModel.findMany(
-    {
-        where: {
-            level: 'MEDIUM'
-        }
-    }
-)
-console.log(logs);
+// const prisma = new PrismaClient();
+// const logs = await prisma.logModel.findMany(
+//     {
+//         where: {
+//             level: 'MEDIUM'
+//         }
+//     }
+// )
+// console.log(logs);
 
     //todo fin 
     //todo se generan correos y llenan archivos 
-   //Server.start();
+   Server.start();
     // todo fin 
 
     //todo se crea un registro 

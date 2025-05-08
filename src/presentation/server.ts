@@ -1,10 +1,10 @@
 import { envs } from '../config/plugins/envs.plugin';
-import { LogSeverityLevel } from '../domain/entities/log.entity';
+import { LogServerityLevel } from '../domain/entities/log.entity';
 import { CheckService } from '../domain/use-cases/checks/check-service';
 import { SendEmailLogs } from '../domain/use-cases/email/send-email-logs';
 import { FileSystemDatasource } from '../infrastructure/datasources/file-system.datasource';
 import { MongoLogDatasource } from '../infrastructure/datasources/mongo-log-datasource';
-import { PostgreLogDataSource } from '../infrastructure/datasources/postgre-log.datasource';
+import { PostgresLogDatasource } from '../infrastructure/datasources/postgre-log.datasource';
 import { LogRepositoryImpl } from '../infrastructure/repositories/log.repository.impl';
 import {CronService} from './cron/cron-service';
 import { EmailService } from './email/email.service';
@@ -13,7 +13,7 @@ import { CronJob } from 'cron';
 const logRepository = new LogRepositoryImpl(
  //  new FileSystemDatasource()
  //   new MongoLogDatasource(),
- new PostgreLogDataSource
+ new PostgresLogDatasource()
 ); // Assuming you have a file system log repository implementation
 
 
@@ -24,22 +24,22 @@ export class Server {
         console.log("Server started.....");
 
         //todo    se crean log en archivo  en carpeta logs
-         CronService.createJob(
-            '* * * * * *', // cronTime
-            () => {
-                const url = 'http://google.com'; // url to check
-               // const url = 'http://localhost:3000'; // url to check
+        //  CronService.createJob(
+        //     '* * * * * *', // cronTime
+        //     () => {
+        //         const url = 'http://google.com'; // url to check
+        //        // const url = 'http://localhost:3000'; // url to check
 
-                new CheckService(
-                 logRepository, 
+        //         new CheckService(
+        //          logRepository, 
                  
-                //  undefined,
-                //  undefined
-                    () => console.log(`Success callback: ${url}`),
-                  (error) => console.log(`Error callback: ${error}`),
-                ).execute(url);
-            } // onTick
-        );
+        //         //  undefined,
+        //         //  undefined
+        //             () => console.log(`Success callback: ${url}`),
+        //           (error) => console.log(`Error callback: ${error}`),
+        //         ).execute(url);
+        //     } // onTick
+        // );
         // todo Fin 
 
           //todo: se manda correo 
@@ -79,10 +79,10 @@ export class Server {
     //    fileSystemLogRepository,
     //    ).execute(['vorganista@thepalacecompany.com','victororga1@gmail.com']);
    // todo Fin 
-  //  const logs = await logRepository.getLogs(LogServerityLevel.low)
-  //  console.log(logs);
+   const logs = await logRepository.getLogs(LogServerityLevel.high);
+   console.log(logs);
          //todo: 
-
+ 
     }
 }
 

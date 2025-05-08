@@ -1,7 +1,7 @@
-import {  PrismaClient, SeverityLevel  } from '@prisma/client';
 import { LogDatasource } from '../../domain/datasources/log.datasource';
-import { LogEntity, LogSeverityLevel } from '../../domain/entities/log.entity';
-
+import { LogEntity, LogServerityLevel } from '../../domain/entities/log.entity';
+import { PrismaClient,SeverityLevel } from '../../generated/prisma';
+const prisma = new PrismaClient()
 
 const prismaClient= new PrismaClient();
 const severityEnum = {
@@ -22,13 +22,14 @@ export class PostgresLogDatasource  implements LogDatasource {
             level: level,
         }
     });
-        // console.log('Posgres saved');
+     //    console.log('Posgres saved');
 
 }
 
 
-async    getLogs(severityLevel: LogSeverityLevel): Promise<LogEntity[]> {
-        const level = severityEnum[severityLevel];
+async    getLogs(severityLevel ?: LogServerityLevel): Promise<LogEntity[]> {
+     const level = severityLevel ? severityEnum[severityLevel] : undefined;
+        //const level = severityEnum[severityLevel];
         const dbLogs = await prismaClient.logModel.findMany({
             where: { level }
     });

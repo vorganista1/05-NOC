@@ -1,4 +1,6 @@
-export enum LogSeverityLevel{
+import { NumberExpression } from "mongoose";
+
+export enum LogServerityLevel{
     low         = 'low',
     medium      = 'medium',
     high        = 'high',
@@ -6,21 +8,24 @@ export enum LogSeverityLevel{
 
 
 export interface LogEntityOptions {
-    level    : LogSeverityLevel;
+    id      ?: number;
+    level    : LogServerityLevel;
     message  : string;
     origin   : string;
     createdAt?: Date;
 
 } 
 export class LogEntity {
-    public level    : LogSeverityLevel;
+    public id      ?: number;
+    public level    : LogServerityLevel;
     public message  : string;
     public createdAt: Date;
     public origin   : string;
 
     constructor(options: LogEntityOptions) {
         
-        const { message, level, origin, createdAt = new Date() } = options;
+        const {id, message, level, origin, createdAt = new Date() } = options;
+        this.id = id;
         this.message = message;
         this.level = level;
         this.origin = origin;
@@ -28,11 +33,11 @@ export class LogEntity {
     }
 
     static fromJson =(json:string ): LogEntity =>{
-
         json =( json=== '') ? '{}':json;
-        const   {message, level, createdAt,origin  } =  JSON.parse(json);
+        const   {id,message, level, createdAt,origin  } =  JSON.parse(json);
 
-        const log = new LogEntity({ 
+        const log = new LogEntity({
+            id, 
             message,
              level,
              createdAt,
@@ -44,9 +49,10 @@ export class LogEntity {
     }
 
     static fromObject  = (object: {[key: string]:any}): LogEntity => {
-        const {message, level, createdAt,   origin } = object;
+
+        const {id , message, level, createdAt,   origin } = object;
         const log = new LogEntity({
-            message, level, createdAt,   origin
+         id,   message, level, createdAt,   origin
         }); 
 
         return log; 

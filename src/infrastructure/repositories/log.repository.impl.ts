@@ -13,8 +13,11 @@ export class LogRepositoryImpl implements LogRepository {
         this.logDatasource.saveLog(log);
     }
 
-    async getLogs(severityLevel: LogServerityLevel): Promise<LogEntity[]> {
-       return this.logDatasource.getLogs(severityLevel);
+    async getLogs(severityLevel ?: LogServerityLevel): Promise<LogEntity[]> {
+      
+        const filter = severityLevel ? severityLevel: undefined;
+
+       return this.logDatasource.getLogs(filter);
     }
     
 }
